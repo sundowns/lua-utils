@@ -67,6 +67,22 @@ function util.table.concat(t1,t2)
     return t1
 end
 
+-- Recursively creates a copy of the given table.
+-- Not my code, taken from: https://www.youtube.com/watch?v=dZ_X0r-49cw#t=9m30s
+function util.table.copy(orig)
+   local orig_type = type(orig)
+   local copy
+   if orig_type == 'table' then
+      copy = {}
+      for orig_key, orig_value in next, orig, nil do
+         copy[util.table.copy(orig_key)] = util.table.copy(orig_value)
+      end
+   else
+      copy = orig
+   end
+   return copy
+end
+
 ---------------------- MATHS
 
 function util.maths.roundToNthDecimal(num, n)
