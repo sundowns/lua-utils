@@ -111,6 +111,7 @@ end
 
 ---------------------- DEBUG
 
+-- Commands assume a global variable 'debug' to exist and alter behaviour. Maybe put that variable in here?
 function util.debug.log(text)
     if debug then
         print(text)
