@@ -40,22 +40,37 @@ setmetatable(util, meta)
 function util.table.print(table, name)
   print("==================")
   if not table then
-      print("<EMPTY TABLE>")
-      return
+    print("<EMPTY TABLE>")
+    return
    end
   if type(table) ~= "table" then
-      assert(false,"Attempted to print NON-TABLE TYPE: "..type(table))
-      return
-   end
+    assert(false,"Attempted to print NON-TABLE TYPE: "..type(table))
+    return
+  end
   if name then print("Printing table: " .. name) end
+  deepprint(table)
+end
+
+function deepprint(table, depth)
+  local d = depth or 0
+  local spacer = ""
+  for i=0,d do
+    spacer = spacer.." "
+  end
   for k, v in pairs(table) do
     if type(v) == "table" then
-      print("[table]: " .. tostring(k))
-      for key, val in pairs(v) do
-        print(" *[key]: " .. tostring(key) .. " | [value]: " .. tostring(val))
-      end
+      print(spacer.."["..k.."]:")
+      deepprint(v, d + 1)
     else
-      print("[key]: " .. tostring(k) .. " | [value]: " .. tostring(v))
+      print(spacer.."[" .. tostring(k) .. "]: " .. tostring(v))
+    end
+  end
+  for i, v in ipairs(table) do
+    if type(v) == "table" then
+      print(spacer.."["..i.."]:")
+      deepprint(v, d + 1)
+    else
+      print(spacer.."[" .. tostring(i) .. "]: " .. tostring(v))
     end
   end
 end
@@ -111,7 +126,6 @@ end
 
 ---------------------- DEBUG
 
--- Commands assume a global variable 'debug' to exist and alter behaviour. Maybe put that variable in here?
 function util.debug.log(text)
     if debug then
         print(text)
