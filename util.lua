@@ -1,12 +1,8 @@
 --[[
    util.lua - Authored by Thomas Smallridge (sundowns)
-   Handy module containing various handy functions for game development in lua,
+   Handy module containing various functions for game development in lua,
    particularly with Love2D.
-
-
 ]]
-
---TODO: Modularise the rest of this before it gets massive (filesystem, maths, debug, etc)
 
 local meta = {
    __index = function(table, key)
@@ -65,37 +61,29 @@ function deepprint(table, depth)
       print(spacer.."[" .. tostring(k) .. "]: " .. tostring(v))
     end
   end
-  for i, v in ipairs(table) do
-    if type(v) == "table" then
-      print(spacer.."["..i.."]:")
-      deepprint(v, d + 1)
-    else
-      print(spacer.."[" .. tostring(i) .. "]: " .. tostring(v))
-    end
-  end
 end
 
 function util.table.concat(t1,t2)
-    for i=1,#t2 do
-        t1[#t1+1] = t2[i]
-    end
-    return t1
+  for i=1,#t2 do
+      t1[#t1+1] = t2[i]
+  end
+  return t1
 end
 
 -- Recursively creates a copy of the given table.
 -- Not my code, taken from: https://www.youtube.com/watch?v=dZ_X0r-49cw#t=9m30s
 function util.table.copy(orig)
-   local orig_type = type(orig)
-   local copy
-   if orig_type == 'table' then
-      copy = {}
-      for orig_key, orig_value in next, orig, nil do
-         copy[util.table.copy(orig_key)] = util.table.copy(orig_value)
-      end
-   else
-      copy = orig
-   end
-   return copy
+  local orig_type = type(orig)
+  local copy
+  if orig_type == 'table' then
+    copy = {}
+    for orig_key, orig_value in next, orig, nil do
+        copy[util.table.copy(orig_key)] = util.table.copy(orig_value)
+    end
+  else
+    copy = orig
+  end
+  return copy
 end
 
 ---------------------- MATHS
@@ -115,52 +103,53 @@ function util.maths.withinVariance(val1, val2, variance)
 end
 
 function util.maths.clamp(val, min, max)
-    if min - val > 0 then
-        return min
-    end
-    if max - val < 0 then
-        return max
-    end
-    return val
+  assert(min < max, "Minimum value must be less than maximum when clamping values.")
+  if min - val > 0 then
+      return min
+  end
+  if max - val < 0 then
+      return max
+  end
+  return val
 end
 
 ---------------------- DEBUG
 
 function util.debug.log(text)
-    if debug then
-        print(text)
-    end
+  if debug then
+    print(text)
+  end
 end
 
 ---------------------- FILE
 
 --Only use this outside of Love2d scope
 function util.file.exists(name)
-   if love then assert(false, "Not to be used in love games, use love.filesystem.getInfo") end
-   local f=io.open(name,"r")
-   if f~=nil then io.close(f) return true else return false end
+  if love then assert(false, "Not to be used in love games, use love.filesystem.getInfo") end
+  local f=io.open(name,"r")
+  if f~=nil then io.close(f) return true else return false end
 end
 
 function util.file.getLuaFileName(url)
-   return string.gsub(url, ".lua", "")
+  return string.gsub(url, ".lua", "")
 end
 
 ---------------------- LOVE2D
 
 function util.love.resetColour()
-   love.graphics.setColor(1,1,1,1)
+  love.graphics.setColor(1,1,1,1)
 end
 
 function util.love.renderStats(x, y)
-   if not x then x = 0 end
-   if not y then y = 0 end
-   local stats = love.graphics.getStats()
-   love.graphics.print("texture memory (MB): ".. stats.texturememory / 1024 / 1024, 3, 60)
-   love.graphics.print("drawcalls: ".. stats.drawcalls, 3, 80)
-   love.graphics.print("canvasswitches: ".. stats.canvasswitches , 3, 100)
-   love.graphics.print("images loaded: ".. stats.images, 3, 120)
-   love.graphics.print("canvases loaded: ".. stats.canvases, 3, 140)
-   love.graphics.print("fonts loaded: ".. stats.fonts, 3, 160)
+  if not x then x = 0 end
+  if not y then y = 0 end
+  local stats = love.graphics.getStats()
+  love.graphics.print("texture memory (MB): ".. stats.texturememory / 1024 / 1024, 3, 60)
+  love.graphics.print("drawcalls: ".. stats.drawcalls, 3, 80)
+  love.graphics.print("canvasswitches: ".. stats.canvasswitches , 3, 100)
+  love.graphics.print("images loaded: ".. stats.images, 3, 120)
+  love.graphics.print("canvases loaded: ".. stats.canvases, 3, 140)
+  love.graphics.print("fonts loaded: ".. stats.fonts, 3, 160)
 end
 
 if not love then util.love = nil end
