@@ -113,6 +113,11 @@ function util.maths.clamp(val, min, max)
   return val
 end
 
+function util.maths.midpoint(x1, y1, x2, y2)
+  assert(x1 and y1 and x2 and y2, "Received invalid input to util.maths.midpoint")
+  return (x2+x1)/2, (y2+y1)/2
+end
+
 ---------------------- DEBUG
 
 function util.debug.log(text)

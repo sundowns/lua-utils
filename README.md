@@ -61,6 +61,10 @@ Checks whether two values, `val1` and `val2` are within a certain range, specifi
 
 Clamps a value `val` between a range defined by `min` and `max`. If the value is below the minimum, it returns the minimum. If the value is greater than the maximum, the maximum is returned. If the value is within the range, it is returned unaltered.
 
+#### midpoint(x1, y1, x2, y2)
+
+Calculates the midpoint between two given points. `m = ((x2+x1)/2) , ((y2+y1)/2)`. Returns mX, mY
+
 ### ***Table*** - `util.table` or `util.t`
 
 #### print(table, name)
