@@ -65,6 +65,10 @@ Clamps a value `val` between a range defined by `min` and `max`. If the value is
 
 Calculates the midpoint between two given points. `m = ((x2+x1)/2) , ((y2+y1)/2)`. Returns mX, mY
 
+#### jitterBy(value, spread)
+
+Returns a value updated by a random amount within -spread and spread
+
 ### ***Table*** - `util.table` or `util.t`
 
 #### print(table, name)
