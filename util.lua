@@ -126,7 +126,6 @@ function util.maths.jitterBy(value, spread)
   return value + love.math.random(-1*spread, spread)
 end
 
---TODO: document
 --Taken from: https://love2d.org/wiki/HSV_color
 function util.maths.HSVtoRGB255(hue, sat, val)
   if sat <= 0 then return val,val,val end
@@ -143,7 +142,6 @@ function util.maths.HSVtoRGB255(hue, sat, val)
   end return (r+m)*255,(g+m)*255,(b+m)*255
 end
 
---TODO: document
 --Taken from: https://love2d.org/wiki/HSV_color
 function util.maths.HSVtoRGB(hue, sat, val)
   if sat <= 0 then return val,val,val end
@@ -170,7 +168,6 @@ end
 
 ---------------------- FILE
 
---Only use this outside of Love2d scope
 function util.file.exists(name)
   if love then assert(false, "Not to be used in love games, use love.filesystem.getInfo") end
   local f=io.open(name,"r")
@@ -203,13 +200,11 @@ if not love then util.love = nil end
 
 ---------------------- STRING
 
---TODO: document this
-
 function util.string.randomString(l)
   if l < 1 then return nil end
   local stringy=""
   for i=1,l do
-    stringy=stringy..random_letter()
+    stringy=stringy..util.string.randomLetter()
   end
   return stringy
 end
