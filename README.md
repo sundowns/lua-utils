@@ -69,6 +69,18 @@ Calculates the midpoint between two given points. `m = ((x2+x1)/2) , ((y2+y1)/2)
 
 Returns a value updated by a random amount within -spread and spread
 
+#### HSVtoRGB255(hue, sat, value)
+
+Takes a value in the [HSV Colour Space](https://en.wikipedia.org/wiki/HSL_and_HSV) and returns the corresponding RGB values. All input (`hue`, `sat`, `val`) and output (`r`,`g`,`b`) are values in the range 0-255.
+
+#### HSVtoRGB(hue, sat, value)
+
+Takes a value in the [HSV Colour Space](https://en.wikipedia.org/wiki/HSL_and_HSV) and returns the corresponding RGB values. Input values (`hue`, `sat`, `val`) are all values from 0-255. Output values (`r`,`g`,`b`) are returned in the range 0-1.
+
+<!-- #### RGBtoHSV(red, green, blue)
+
+Takes a value in the RGB colour space and converts it to corresponding [HSV](https://en.wikipedia.org/wiki/HSL_and_HSV) values. -->
+
 ### ***Table*** - `util.table` or `util.t`
 
 #### print(table, name)
