@@ -110,6 +110,18 @@ function util.table.copy(orig)
   return copy
 end
 
+--sums two tables of numbers together
+function util.table.sum (t1, t2)
+  local result = {}
+  for key, val in pairs(t1) do
+      result[key] = (result[key] or 0) + val
+  end
+  for key, val in pairs(t2) do
+      result[key] = (result[key] or 0) + val
+  end
+  return result
+end;
+
 ---------------------- MATHS
 
 function util.maths.roundToNthDecimal(num, n)
@@ -177,6 +189,10 @@ function util.maths.HSVtoRGB(hue, sat, val)
   elseif h < 5 then r,g,b = x,0,c
   else              r,g,b = c,0,x
   end return (r+m),(g+m),(b+m)
+end
+
+function util.maths.distanceBetween(x1, y1, x2, y2)
+  return math.sqrt(((x2 - x1)^2) + ((y2 - y1)^2))
 end
 
 ---------------------- DEBUG

@@ -79,6 +79,10 @@ Takes a value in the [HSV Colour Space](https://en.wikipedia.org/wiki/HSL_and_HS
 
 Takes a value in the [HSV Colour Space](https://en.wikipedia.org/wiki/HSL_and_HSV) and returns the corresponding RGB values. Input values (`hue`, `sat`, `val`) are all values from 0-255. Output values (`r`,`g`,`b`) are returned in the range 0-1.
 
+### distanceBetween(x1, y1, x2, y2)
+
+Calculates and returns the distance between two points.
+
 ------------------------------
 
 ## **Table** - `util.table` or `util.t`
@@ -95,6 +99,10 @@ Concatenates two tables, adding all the key-value pairs from `t2` to `t1`.
 ### copy(orig)
 
 Recursively copies an existing table. Code is taken from this [excellent tutorial](https://www.youtube.com/watch?v=dZ_X0r-49cw#t=9m30s).
+
+### sum(t1, t2)
+
+Takes two tables and combines their key/value pairs. Any number values with the same key will be added together.
 
 ------------------------------
 
