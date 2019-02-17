@@ -24,25 +24,24 @@
   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ]]
-
 local meta = {
-   __index = function(table, key)
-      if key == "l" then
-         return rawget(table, "love")
-      elseif key == "m" then
-         return rawget(table, "maths")
-      elseif key == "t" then
-         return rawget(table, "table")
-      elseif key == "f" then
-         return rawget(table, "file")
-      elseif key == "d" then
-         return rawget(table, "debug")
-      elseif key == "s" then
-        return rawget(table, "string")
-      else
-         return rawget(table, key)
-      end
-   end;
+  __index = function(table, key)
+    if key == "l" then
+      return rawget(table, "love")
+    elseif key == "m" then
+      return rawget(table, "maths")
+    elseif key == "t" then
+      return rawget(table, "table")
+    elseif key == "f" then
+      return rawget(table, "file")
+    elseif key == "d" then
+      return rawget(table, "debug")
+    elseif key == "s" then
+      return rawget(table, "string")
+    else
+      return rawget(table, key)
+    end
+  end
 }
 
 local util = {}
@@ -62,34 +61,51 @@ function util.table.print(table, name)
   if not table then
     print("<EMPTY TABLE>")
     return
-   end
+  end
   if type(table) ~= "table" then
-    assert(false,"Attempted to print NON-TABLE TYPE: "..type(table))
+    assert(false, "Attempted to print NON-TABLE TYPE: " .. type(table))
     return
   end
-  if name then print("Printing table: " .. name) end
+  if name then
+    print("Printing table: " .. name)
+  end
   deepprint(table)
 end
 
 function deepprint(table, depth)
   local d = depth or 0
   local spacer = ""
-  for i=0,d do
-    spacer = spacer.." "
+  for i = 0, d do
+    spacer = spacer .. " "
   end
   for k, v in pairs(table) do
     if type(v) == "table" then
-      print(spacer.."["..k.."]:")
+      print(spacer .. "[" .. k .. "]:")
       deepprint(v, d + 1)
     else
-      print(spacer.."[" .. tostring(k) .. "]: " .. tostring(v))
+      print(spacer .. "[" .. tostring(k) .. "]: " .. tostring(v))
     end
   end
 end
 
-function util.table.concat(t1,t2)
-  for i=1,#t2 do
-      t1[#t1+1] = t2[i]
+function util.table.printKeys(table, name)
+  print("==================")
+  if not table then
+    print("<EMPTY TABLE>")
+    return
+  end
+  if type(table) ~= "table" then
+    assert(false, "Attempted to print keys for NON-TABLE TYPE: " .. type(table))
+    return
+  end
+  for k, v in pairs(table) do
+    print(k)
+  end
+end
+
+function util.table.concat(t1, t2)
+  for i = 1, #t2 do
+    t1[#t1 + 1] = t2[i]
   end
   return t1
 end
@@ -99,10 +115,10 @@ end
 function util.table.copy(orig)
   local orig_type = type(orig)
   local copy
-  if orig_type == 'table' then
+  if orig_type == "table" then
     copy = {}
     for orig_key, orig_value in next, orig, nil do
-        copy[util.table.copy(orig_key)] = util.table.copy(orig_value)
+      copy[util.table.copy(orig_key)] = util.table.copy(orig_value)
     end
   else
     copy = orig
@@ -111,21 +127,21 @@ function util.table.copy(orig)
 end
 
 --sums two tables of numbers together
-function util.table.sum (t1, t2)
+function util.table.sum(t1, t2)
   local result = {}
   for key, val in pairs(t1) do
-      result[key] = (result[key] or 0) + val
+    result[key] = (result[key] or 0) + val
   end
   for key, val in pairs(t2) do
-      result[key] = (result[key] or 0) + val
+    result[key] = (result[key] or 0) + val
   end
   return result
-end;
+end
 
 ---------------------- MATHS
 
 function util.maths.roundToNthDecimal(num, n)
-  local mult = 10^(n or 0)
+  local mult = 10 ^ (n or 0)
   return math.floor(num * mult + 0.5) / mult
 end
 
@@ -141,58 +157,76 @@ end
 function util.maths.clamp(val, min, max)
   assert(min < max, "Minimum value must be less than maximum when clamping values.")
   if min - val > 0 then
-      return min
+    return min
   end
   if max - val < 0 then
-      return max
+    return max
   end
   return val
 end
 
 function util.maths.midpoint(x1, y1, x2, y2)
   assert(x1 and y1 and x2 and y2, "Received invalid input to util.maths.midpoint")
-  return (x2+x1)/2, (y2+y1)/2
+  return (x2 + x1) / 2, (y2 + y1) / 2
 end
 
 function util.maths.jitterBy(value, spread)
   assert(love, "This function uses love.math.random for the time being")
-  return value + love.math.random(-1*spread, spread)
+  return value + love.math.random(-1 * spread, spread)
 end
 
 --Taken from: https://love2d.org/wiki/HSV_color
 function util.maths.HSVtoRGB255(hue, sat, val)
-  if sat <= 0 then return val,val,val end
-  local h, s, v = hue/256*6, sat/255, val/255
-  local c = v*s
-  local x = (1-math.abs((h%2)-1))*c
-  local m,r,g,b = (v-c), 0,0,0
-  if h < 1     then r,g,b = c,x,0
-  elseif h < 2 then r,g,b = x,c,0
-  elseif h < 3 then r,g,b = 0,c,x
-  elseif h < 4 then r,g,b = 0,x,c
-  elseif h < 5 then r,g,b = x,0,c
-  else              r,g,b = c,0,x
-  end return (r+m)*255,(g+m)*255,(b+m)*255
+  if sat <= 0 then
+    return val, val, val
+  end
+  local h, s, v = hue / 256 * 6, sat / 255, val / 255
+  local c = v * s
+  local x = (1 - math.abs((h % 2) - 1)) * c
+  local m, r, g, b = (v - c), 0, 0, 0
+  if h < 1 then
+    r, g, b = c, x, 0
+  elseif h < 2 then
+    r, g, b = x, c, 0
+  elseif h < 3 then
+    r, g, b = 0, c, x
+  elseif h < 4 then
+    r, g, b = 0, x, c
+  elseif h < 5 then
+    r, g, b = x, 0, c
+  else
+    r, g, b = c, 0, x
+  end
+  return (r + m) * 255, (g + m) * 255, (b + m) * 255
 end
 
 --Taken from: https://love2d.org/wiki/HSV_color
 function util.maths.HSVtoRGB(hue, sat, val)
-  if sat <= 0 then return val,val,val end
-  local h, s, v = hue/256*6, sat/255, val/255
-  local c = v*s
-  local x = (1-math.abs((h%2)-1))*c
-  local m,r,g,b = (v-c), 0,0,0
-  if h < 1     then r,g,b = c,x,0
-  elseif h < 2 then r,g,b = x,c,0
-  elseif h < 3 then r,g,b = 0,c,x
-  elseif h < 4 then r,g,b = 0,x,c
-  elseif h < 5 then r,g,b = x,0,c
-  else              r,g,b = c,0,x
-  end return (r+m),(g+m),(b+m)
+  if sat <= 0 then
+    return val, val, val
+  end
+  local h, s, v = hue / 256 * 6, sat / 255, val / 255
+  local c = v * s
+  local x = (1 - math.abs((h % 2) - 1)) * c
+  local m, r, g, b = (v - c), 0, 0, 0
+  if h < 1 then
+    r, g, b = c, x, 0
+  elseif h < 2 then
+    r, g, b = x, c, 0
+  elseif h < 3 then
+    r, g, b = 0, c, x
+  elseif h < 4 then
+    r, g, b = 0, x, c
+  elseif h < 5 then
+    r, g, b = x, 0, c
+  else
+    r, g, b = c, 0, x
+  end
+  return (r + m), (g + m), (b + m)
 end
 
 function util.maths.distanceBetween(x1, y1, x2, y2)
-  return math.sqrt(((x2 - x1)^2) + ((y2 - y1)^2))
+  return math.sqrt(((x2 - x1) ^ 2) + ((y2 - y1) ^ 2))
 end
 
 ---------------------- DEBUG
@@ -206,9 +240,16 @@ end
 ---------------------- FILE
 
 function util.file.exists(name)
-  if love then assert(false, "Not to be used in love games, use love.filesystem.getInfo") end
-  local f=io.open(name,"r")
-  if f~=nil then io.close(f) return true else return false end
+  if love then
+    assert(false, "Not to be used in love games, use love.filesystem.getInfo")
+  end
+  local f = io.open(name, "r")
+  if f ~= nil then
+    io.close(f)
+    return true
+  else
+    return false
+  end
 end
 
 function util.file.getLuaFileName(url)
@@ -218,36 +259,44 @@ end
 ---------------------- LOVE2D
 
 function util.love.resetColour()
-  love.graphics.setColor(1,1,1,1)
+  love.graphics.setColor(1, 1, 1, 1)
 end
 
 function util.love.renderStats(x, y)
-  if not x then x = 0 end
-  if not y then y = 0 end
+  if not x then
+    x = 0
+  end
+  if not y then
+    y = 0
+  end
   local stats = love.graphics.getStats()
-  love.graphics.print("texture memory (MB): ".. stats.texturememory / 1024 / 1024, x, y)
-  love.graphics.print("drawcalls: ".. stats.drawcalls, x, y+20)
-  love.graphics.print("canvasswitches: ".. stats.canvasswitches , x, y+40)
-  love.graphics.print("images loaded: ".. stats.images, x, y+60)
-  love.graphics.print("canvases loaded: ".. stats.canvases, x, y+80)
-  love.graphics.print("fonts loaded: ".. stats.fonts, x, y+100)
+  love.graphics.print("texture memory (MB): " .. stats.texturememory / 1024 / 1024, x, y)
+  love.graphics.print("drawcalls: " .. stats.drawcalls, x, y + 20)
+  love.graphics.print("canvasswitches: " .. stats.canvasswitches, x, y + 40)
+  love.graphics.print("images loaded: " .. stats.images, x, y + 60)
+  love.graphics.print("canvases loaded: " .. stats.canvases, x, y + 80)
+  love.graphics.print("fonts loaded: " .. stats.fonts, x, y + 100)
 end
 
-if not love then util.love = nil end
+if not love then
+  util.love = nil
+end
 
 ---------------------- STRING
 
 function util.string.randomString(l)
-  if l < 1 then return nil end
-  local stringy=""
-  for i=1,l do
-    stringy=stringy..util.string.randomLetter()
+  if l < 1 then
+    return nil
+  end
+  local stringy = ""
+  for i = 1, l do
+    stringy = stringy .. util.string.randomLetter()
   end
   return stringy
 end
 
 function util.string.randomLetter()
-    return string.char(math.random(97, 122));
+  return string.char(math.random(97, 122))
 end
 
 return util

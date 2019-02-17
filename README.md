@@ -92,6 +92,10 @@ Calculates and returns the distance between two points.
 Recursively prints a table `table` to the console. The output can optionally be named with `name`.
 Probably the most useful function in the whole library.
 
+### printKeys(table, name)
+
+Print the keys for a table. The output can optionally be named with `name`.
+
 ### concat(t1, t2)
 
 Concatenates two tables, adding all the key-value pairs from `t2` to `t1`.
