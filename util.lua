@@ -6,7 +6,7 @@
   - https://github.com/sundowns/lua-utils
   
   MIT LICENSE
-  Copyright (c) 2011 Enrique García Cota
+  Copyright (c) 2019 Thomas Smallridge
   Permission is hereby granted, free of charge, to any person obtaining a
   copy of this software and associated documentation files (the
   "Software"), to deal in the Software without restriction, including
@@ -38,6 +38,8 @@ local meta = {
       return rawget(table, "debug")
     elseif key == "s" then
       return rawget(table, "string")
+    elseif key == "g" then
+      return rawget(table, "generic")
     else
       return rawget(table, key)
     end
@@ -51,12 +53,13 @@ util.table = {}
 util.file = {}
 util.debug = {}
 util.string = {}
+util.generic = {}
 
 setmetatable(util, meta)
 
 ---------------------- TABLES
 
-function util.table.print(table, name)
+function util.table.print(table, depth, name)
   print("==================")
   if not table then
     print("<EMPTY TABLE>")
@@ -69,19 +72,24 @@ function util.table.print(table, name)
   if name then
     print("Printing table: " .. name)
   end
-  deepprint(table)
+  deepprint(table, 0, depth)
 end
 
-function deepprint(table, depth)
+function deepprint(table, depth, max_depth)
   local d = depth or 0
+  local max = max_depth or 10
   local spacer = ""
   for i = 0, d do
     spacer = spacer .. " "
   end
+  if d > max then
+    print(spacer .. "<exceeded max depth (" .. max .. ")>")
+    return
+  end
   for k, v in pairs(table) do
     if type(v) == "table" then
       print(spacer .. "[" .. k .. "]:")
-      deepprint(v, d + 1)
+      deepprint(v, d + 1, max)
     else
       print(spacer .. "[" .. tostring(k) .. "]: " .. tostring(v))
     end
@@ -280,6 +288,13 @@ end
 
 if not love then
   util.love = nil
+end
+
+---------------------- GENERIC
+
+function util.generic.choose(...)
+  local args = {...}
+  return args[math.random(1, #args)]
 end
 
 ---------------------- STRING

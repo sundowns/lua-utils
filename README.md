@@ -1,20 +1,21 @@
 # Lua / LÖVE2D Util
 
-A collection of useful helper functions for Lua game development, particularly targeted at [LÖVE2D](https://love2d.org/). This library is in its infancy and will continue to grow and evolve as I write or stumble up on other useful functions to speed up development.
+A collection of useful helper functions for Lua game development, particularly targeted at [LÖVE2D](https://love2d.org/). This library is in its infancy and will continue to grow and evolve as I write or stumble upon other useful functions to speed up development.
 
 The library is split into a series of submodules isolated to their domain:
 
-* **love (l)** - Functions specific to [LÖVE2D](https://love2d.org/).
-* **maths (m)** - Collection of useful functions for manipulating numbers and geometry. Yes its 'maths' and not 'math'.
-* **table (t)** - Functions used to perform assorted common and useful operations on tables.
-* **file (f)** - File handling functions.
-* **string (s)** - String manipulation/generation functions.
-* **debug (d)** - Some useful functions for debugging programs at run-time (blame Lua). Typically depend on a global 'debug' toggle variable.
+- **love (l)** - Functions specific to [LÖVE2D](https://love2d.org/).
+- **generic (g)** - Useful generic functions
+- **maths (m)** - Collection of useful functions for manipulating numbers and geometry. Yes its 'maths' and not 'math'.
+- **table (t)** - Functions used to perform assorted common and useful operations on tables.
+- **file (f)** - File handling functions.
+- **string (s)** - String manipulation/generation functions.
+- **debug (d)** - Some useful functions for debugging programs at run-time (blame Lua). Typically depend on a global 'debug' toggle variable.
 
 Each module can either be accessed by full name or by the first letter of its name.
 For example, `util.t.print(table)` is the same as `util.table.print(table)`
 
-------------------------------
+---
 
 ## Examples
 
@@ -35,7 +36,7 @@ local newTable = util.t.concat(table1, table2)
 util.t.print(newTable) -- { a: true, b: true, c: true }
 ```
 
-------------------------------
+---
 
 ## **Love** - `util.love` or `util.l`
 
@@ -45,9 +46,17 @@ Short-hand for `love.graphics.setColor(1,1,1,1)`
 
 ### renderStats(x, y)
 
-Displays graphical stats from `love.graphics.getStats()` at the specified coordinates (defaults to 0,0).
+Displays graphical stats from `love.graphics.getStats()` at the specified coordinates (defaults to 0,0). Must be called in `love.draw()`.
 
-------------------------------
+---
+
+## **Generic** - `util.generic` or `util.g`
+
+### choose(...args)
+
+Randomly return one of the given arguments. This function can take variable length arguments. Remember to seed the random by second with `math.randomseed(os.time())`.
+
+---
 
 ## **Maths** - `util.maths` or `util.m`
 
@@ -83,14 +92,13 @@ Takes a value in the [HSV Colour Space](https://en.wikipedia.org/wiki/HSL_and_HS
 
 Calculates and returns the distance between two points.
 
-------------------------------
+---
 
 ## **Table** - `util.table` or `util.t`
 
-### print(table, name)
+### print(table, depth, name)
 
-Recursively prints a table `table` to the console. The output can optionally be named with `name`.
-Probably the most useful function in the whole library.
+Recursively prints a table `table` to the console. A maximum `depth` can be specified, by default it is 10. The output can optionally be named with `name`.
 
 ### printKeys(table, name)
 
@@ -108,7 +116,7 @@ Recursively copies an existing table. Code is taken from this [excellent tutoria
 
 Takes two tables and combines their key/value pairs. Any number values with the same key will be added together.
 
-------------------------------
+---
 
 ## **File** - `util.file` or `util.f`
 
@@ -120,7 +128,7 @@ Checks to see if a file exists at the path specified by `path`. Intended for use
 
 Returns the name of a .lua file without the `.lua` extension. Can be useful for listing directories of .lua files without extensions.
 
-------------------------------
+---
 
 ## **String** - `util.string` or `util.s`
 
@@ -132,7 +140,7 @@ Returns a random lowercase letter (a-z).
 
 Returns a string of length `l` consisting of random lowercase letters.
 
-------------------------------
+---
 
 ## **Debug** - `util.debug` or `util.d`
 
