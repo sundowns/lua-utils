@@ -4,7 +4,7 @@
     particularly with Love2D.
   - Authored by Thomas Smallridge (sundowns)
   - https://github.com/sundowns/lua-utils
-  
+
   MIT LICENSE
   Copyright (c) 2019 Thomas Smallridge
   Permission is hereby granted, free of charge, to any person obtaining a
