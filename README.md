@@ -92,6 +92,10 @@ Takes a value in the [HSV Colour Space](https://en.wikipedia.org/wiki/HSL_and_HS
 
 Calculates and returns the distance between two points.
 
+### rotatePointAroundOrigin(x, y, rotation)
+
+Calculates and returns a point rotated around 0,0
+
 ---
 
 ## **Table** - `util.table` or `util.t`

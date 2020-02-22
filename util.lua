@@ -237,6 +237,13 @@ function util.maths.distanceBetween(x1, y1, x2, y2)
   return math.sqrt(((x2 - x1) ^ 2) + ((y2 - y1) ^ 2))
 end
 
+-- rotation is in radians
+function util.maths.rotatePointAroundOrigin(x, y, rotation)
+  local s = math.sin(rotation)
+  local c = math.cos(rotation)
+  return x * c - y * s, x * s + y * c
+end
+
 ---------------------- DEBUG
 
 function util.debug.log(text)
@@ -267,6 +274,10 @@ end
 ---------------------- LOVE2D
 
 function util.love.resetColour()
+  love.graphics.setColor(1, 1, 1, 1)
+end
+
+function util.love.resetColor()
   love.graphics.setColor(1, 1, 1, 1)
 end
 
