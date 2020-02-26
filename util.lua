@@ -28,7 +28,7 @@ local meta = {
   __index = function(table, key)
     if key == "l" then
       return rawget(table, "love")
-    elseif key == "m" then
+    elseif key == "m" or key == "math" then
       return rawget(table, "maths")
     elseif key == "t" then
       return rawget(table, "table")
@@ -96,7 +96,7 @@ function deepprint(table, depth, max_depth)
   end
 end
 
-function util.table.printKeys(table, name)
+function util.table.print_keys(table, name)
   print("==================")
   if not table then
     print("<EMPTY TABLE>")
@@ -148,12 +148,12 @@ end
 
 ---------------------- MATHS
 
-function util.maths.roundToNthDecimal(num, n)
+function util.maths.round_to_nth(num, n)
   local mult = 10 ^ (n or 0)
   return math.floor(num * mult + 0.5) / mult
 end
 
-function util.maths.withinVariance(val1, val2, variance)
+function util.maths.within_variance(val1, val2, variance)
   local diff = math.abs(val1 - val2)
   if diff < variance then
     return true
@@ -178,13 +178,13 @@ function util.maths.midpoint(x1, y1, x2, y2)
   return (x2 + x1) / 2, (y2 + y1) / 2
 end
 
-function util.maths.jitterBy(value, spread)
+function util.maths.jitter_by(value, spread)
   assert(love, "This function uses love.math.random for the time being")
   return value + love.math.random(-1 * spread, spread)
 end
 
 --Taken from: https://love2d.org/wiki/HSV_color
-function util.maths.HSVtoRGB255(hue, sat, val)
+function util.maths.hsv_to_rgb_255(hue, sat, val)
   if sat <= 0 then
     return val, val, val
   end
@@ -209,7 +209,7 @@ function util.maths.HSVtoRGB255(hue, sat, val)
 end
 
 --Taken from: https://love2d.org/wiki/HSV_color
-function util.maths.HSVtoRGB(hue, sat, val)
+function util.maths.Hsv_to_Rgb(hue, sat, val)
   if sat <= 0 then
     return val, val, val
   end
@@ -233,12 +233,12 @@ function util.maths.HSVtoRGB(hue, sat, val)
   return (r + m), (g + m), (b + m)
 end
 
-function util.maths.distanceBetween(x1, y1, x2, y2)
+function util.maths.distance_between(x1, y1, x2, y2)
   return math.sqrt(((x2 - x1) ^ 2) + ((y2 - y1) ^ 2))
 end
 
 -- rotation is in radians
-function util.maths.rotatePointAroundOrigin(x, y, rotation)
+function util.maths.rotate_point_around_origin(x, y, rotation)
   local s = math.sin(rotation)
   local c = math.cos(rotation)
   return x * c - y * s, x * s + y * c
@@ -247,7 +247,7 @@ end
 ---------------------- DEBUG
 
 function util.debug.log(text)
-  if debug then
+  if _debug then
     print(text)
   end
 end
@@ -267,21 +267,21 @@ function util.file.exists(name)
   end
 end
 
-function util.file.getLuaFileName(url)
+function util.file.get_lua_filename(url)
   return string.gsub(url, ".lua", "")
 end
 
 ---------------------- LOVE2D
 
-function util.love.resetColour()
+function util.love.reset_colour()
   love.graphics.setColor(1, 1, 1, 1)
 end
 
-function util.love.resetColor()
+function util.love.reset_color()
   love.graphics.setColor(1, 1, 1, 1)
 end
 
-function util.love.renderStats(x, y)
+function util.love.render_stats(x, y)
   if not x then
     x = 0
   end
@@ -308,9 +308,33 @@ function util.generic.choose(...)
   return args[math.random(1, #args)]
 end
 
+-- To specify weight, include an integer in the table after the option. Defaults to 1.
+-- eg. choose_weighted({"choice_1", 5}, {"choice_2", 10})
+function util.generic.choose_weighted(...)
+  local args = {...}
+  local weighting_sum = 0
+  for i, v in pairs(args) do
+    if type(v) == "table" then
+      weighting_sum = weighting_sum + (v[2] or 1)
+    else
+      args[i] = {v, 1}
+      weighting_sum = weighting_sum + 1
+    end
+  end
+
+  local rand = math.random(weighting_sum)
+  for i, v in pairs(args) do
+    if rand <= v[2] then
+      return args[i][1]
+    end
+    rand = rand - v[2]
+  end
+  assert("Something went very wrong...")
+end
+
 ---------------------- STRING
 
-function util.string.randomString(l)
+function util.string.random_string(l)
   if l < 1 then
     return nil
   end
@@ -321,7 +345,7 @@ function util.string.randomString(l)
   return stringy
 end
 
-function util.string.randomLetter()
+function util.string.random_letter()
   return string.char(math.random(97, 122))
 end
 
