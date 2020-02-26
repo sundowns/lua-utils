@@ -56,6 +56,19 @@ Displays graphical stats from `love.graphics.getStats()` at the specified coordi
 
 Randomly return one of the given arguments. This function can take variable length arguments. Remember to seed the random by second with `math.randomseed(os.time())`.
 
+### choose_weighted(...args)
+
+Randomly return one of the given arguments with a weighted random (defaults to 1). This function can take variable length arguments. Remember to seed the random by second with `math.randomseed(os.time())`. If non-table options are provided, they are treated as a weighting of 1. To specify table arguments, they must be wrapped in an additional table, optionally with a weighting.
+
+```lua
+
+local choice = _util.g.choose_weighted({"foo", 2}, "bar", {"foobar"}) -- all valid
+
+local some_table_choice = {}
+local choice = _util.g.choose_weighted({"foo", 2}, {some_table_choice}) -- valid
+local choice = _util.g.choose_weighted({"foo", 2}, some_table_choice) -- not valid
+```
+
 ---
 
 ## **Maths** - `util.maths` or `util.m`
