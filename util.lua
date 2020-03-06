@@ -340,7 +340,7 @@ function util.string.random_string(l)
   end
   local stringy = ""
   for i = 1, l do
-    stringy = stringy .. util.string.randomLetter()
+    stringy = stringy .. util.string.random_letter()
   end
   return stringy
 end
